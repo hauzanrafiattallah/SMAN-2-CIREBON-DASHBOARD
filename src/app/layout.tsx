@@ -5,7 +5,7 @@ import "./globals.css";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "SMAN 2 Cirebon School Management Dashboard",
+  title: "SMAN 2 Cirebon Dashboard",
   description: "School Management System",
 };
 
