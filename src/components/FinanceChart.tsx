@@ -79,7 +79,13 @@ const FinanceChart = () => {
     <div className="bg-white p-4 h-full rounded-lg">
       <div className="flex justify-between items-center">
         <h1 className="text-lg font-semibold">Finance</h1>
-        <Image src="/moreDark.png" alt=" " width={20} height={20} />
+        <Image
+          className="cursor-pointer"
+          src="/moreDark.png"
+          alt=" "
+          width={20}
+          height={20}
+        />
       </div>
       <ResponsiveContainer width="100%" height="90%">
         <LineChart
@@ -119,7 +125,12 @@ const FinanceChart = () => {
             stroke="#C3EBFA"
             strokeWidth={5}
           />
-          <Line type="monotone" dataKey="expense" stroke="#CFCEFF" strokeWidth={5}/>
+          <Line
+            type="monotone"
+            dataKey="expense"
+            stroke="#CFCEFF"
+            strokeWidth={5}
+          />
         </LineChart>
       </ResponsiveContainer>
     </div>

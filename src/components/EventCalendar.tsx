@@ -39,7 +39,7 @@ const EventCalendar = () => {
       <Calendar onChange={onChange} value={value} />
       <div className="flex justify-between items-center">
         <h1 className="font-semibold text-xl my-4">Events</h1>
-        <Image src="/moreDark.png" alt="" width={20} height={20} />
+        <Image className="cursor-pointer" src="/moreDark.png" alt="" width={20} height={20} />
       </div>
       <div className="flex flex-col gap-4">
         {events.map((event) => (
