@@ -6,7 +6,6 @@ import { calendarEvents } from "@/lib/data";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import { useState } from "react";
 
-moment.locale("id");
 const localizer = momentLocalizer(moment);
 
 const BigCalendar = () => {
