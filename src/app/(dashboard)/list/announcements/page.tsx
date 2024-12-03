@@ -3,7 +3,7 @@ import Table from "@/components/Table";
 import TableSearch from "@/components/TableSearch";
 import Image from "next/image";
 import Link from "next/link";
-import { announcementsData, eventsData, role } from "@/lib/data";
+import { announcementsData, role } from "@/lib/data";
 
 type Anncouncement = {
   id: number;
