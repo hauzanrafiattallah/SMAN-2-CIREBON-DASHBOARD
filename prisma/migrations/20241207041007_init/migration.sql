@@ -76,7 +76,7 @@ CREATE TABLE "Class" (
     "id" SERIAL NOT NULL,
     "name" TEXT NOT NULL,
     "capacity" INTEGER NOT NULL,
-    "supervisorId" TEXT NOT NULL,
+    "supervisorId" TEXT,
     "gradeId" INTEGER NOT NULL,
 
     CONSTRAINT "Class_pkey" PRIMARY KEY ("id")
@@ -230,7 +230,7 @@ ALTER TABLE "Student" ADD CONSTRAINT "Student_classId_fkey" FOREIGN KEY ("classI
 ALTER TABLE "Student" ADD CONSTRAINT "Student_gradeId_fkey" FOREIGN KEY ("gradeId") REFERENCES "Grade"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Class" ADD CONSTRAINT "Class_supervisorId_fkey" FOREIGN KEY ("supervisorId") REFERENCES "Teacher"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "Class" ADD CONSTRAINT "Class_supervisorId_fkey" FOREIGN KEY ("supervisorId") REFERENCES "Teacher"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Class" ADD CONSTRAINT "Class_gradeId_fkey" FOREIGN KEY ("gradeId") REFERENCES "Grade"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
