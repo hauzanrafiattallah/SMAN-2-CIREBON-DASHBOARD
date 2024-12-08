@@ -5,18 +5,10 @@ import Image from "next/image";
 import Link from "next/link";
 import { role, teachersData } from "@/lib/data";
 import FormModal from "@/components/FormModal";
+import { Subject, Teacher, Class } from "@prisma/client";
+import prisma from "@/lib/prisma";
 
-type Teacher = {
-  id: number;
-  teacherId: string;
-  name: string;
-  email?: string;
-  photo: string;
-  phone: string;
-  subjects: string[];
-  classes: string[];
-  address: string;
-};
+type TeacherList = Teacher & { subjects: Subject[] } & { classes: Class[] };
 
 const columns = [
   {
@@ -54,15 +46,16 @@ const columns = [
   },
 ];
 
-const TeacherListPage = () => {
-  const renderRow = (item: Teacher) => (
+const TeacherListPage = async () => {
+
+  const renderRow = (item: TeacherList) => (
     <tr
       key={item.id}
       className="border-b border-gray-200 even:bg-slate-50 text-sm hover:bg-PurpleLight"
     >
       <td className="flex items-center gap-4 p-2">
         <Image
-          src={item.photo}
+          src={item.img || "/noAvatar.png"}
           alt=""
           width={40}
           height={40}
@@ -73,9 +66,9 @@ const TeacherListPage = () => {
           <p className="text-xs text-gray-500">{item?.email}</p>
         </div>
       </td>
-      <td className="hidden sm:table-cell">{item.teacherId}</td>
-      <td className="hidden sm:table-cell">{item.subjects.join(",")}</td>
-      <td className="hidden sm:table-cell">{item.classes.join(",")}</td>
+      <td className="hidden sm:table-cell">{item.username}</td>
+      <td className="hidden sm:table-cell">{item.subjects.map(subject=>subject.name).join(",")}</td>
+      <td className="hidden sm:table-cell">{item.classes.map(classItem=>classItem.name).join(",")}</td>
       <td className="hidden lg:table-cell">{item.phone}</td>
       <td className="hidden lg:table-cell">{item.address}</td>
       <td>
@@ -95,6 +88,15 @@ const TeacherListPage = () => {
       </td>
     </tr>
   );
+
+  const data = await prisma.teacher.findMany({
+    include: {
+      subjects: true,
+      classes: true,
+    },
+  });
+
+  console.log(data);
 
   return (
     <div className="bg-white rounded-md p-4 flex-1 mt-0 m-4">
@@ -120,7 +122,7 @@ const TeacherListPage = () => {
         </div>
       </div>
       {/* LIST */}
-      <Table columns={columns} renderRow={renderRow} data={teachersData} />
+      <Table columns={columns} renderRow={renderRow} data={data} />
       {/* PAGINATION */}
       <Pagination />
     </div>
