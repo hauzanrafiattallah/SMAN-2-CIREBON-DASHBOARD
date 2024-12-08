@@ -7,6 +7,7 @@ import { role, teachersData } from "@/lib/data";
 import FormModal from "@/components/FormModal";
 import { Subject, Teacher, Class } from "@prisma/client";
 import prisma from "@/lib/prisma";
+import { ITEM_PER_PAGE } from "@/lib/settings";
 
 type TeacherList = Teacher & { subjects: Subject[] } & { classes: Class[] };
 
@@ -46,8 +47,11 @@ const columns = [
   },
 ];
 
-const TeacherListPage = async () => {
-
+const TeacherListPage = async ({
+  searchParams,
+}: {
+  searchParams: { [key: string]: string | undefined };
+}) => {
   const renderRow = (item: TeacherList) => (
     <tr
       key={item.id}
@@ -67,8 +71,12 @@ const TeacherListPage = async () => {
         </div>
       </td>
       <td className="hidden sm:table-cell">{item.username}</td>
-      <td className="hidden sm:table-cell">{item.subjects.map(subject=>subject.name).join(",")}</td>
-      <td className="hidden sm:table-cell">{item.classes.map(classItem=>classItem.name).join(",")}</td>
+      <td className="hidden sm:table-cell">
+        {item.subjects.map((subject) => subject.name).join(",")}
+      </td>
+      <td className="hidden sm:table-cell">
+        {item.classes.map((classItem) => classItem.name).join(",")}
+      </td>
       <td className="hidden lg:table-cell">{item.phone}</td>
       <td className="hidden lg:table-cell">{item.address}</td>
       <td>
@@ -89,14 +97,21 @@ const TeacherListPage = async () => {
     </tr>
   );
 
-  const data = await prisma.teacher.findMany({
-    include: {
-      subjects: true,
-      classes: true,
-    },
-  });
+  const { page, ...queryParams } = searchParams;
 
-  console.log(data);
+  const p = page ? parseInt(page) : 1;
+
+  const [data, count] = await prisma.$transaction([
+    prisma.teacher.findMany({
+      include: {
+        subjects: true,
+        classes: true,
+      },
+      take: ITEM_PER_PAGE,
+      skip: (p - 1) * ITEM_PER_PAGE,
+    }),
+    prisma.teacher.count(),
+  ]);
 
   return (
     <div className="bg-white rounded-md p-4 flex-1 mt-0 m-4">
@@ -124,7 +139,7 @@ const TeacherListPage = async () => {
       {/* LIST */}
       <Table columns={columns} renderRow={renderRow} data={data} />
       {/* PAGINATION */}
-      <Pagination />
+      <Pagination page={p} count={count} />
     </div>
   );
 };
