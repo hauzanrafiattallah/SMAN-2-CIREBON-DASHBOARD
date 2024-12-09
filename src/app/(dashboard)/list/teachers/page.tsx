@@ -46,57 +46,55 @@ const columns = [
     accessor: "action",
   },
 ];
-
+const renderRow = (item: TeacherList) => (
+  <tr
+    key={item.id}
+    className="border-b border-gray-200 even:bg-slate-50 text-sm hover:bg-PurpleLight"
+  >
+    <td className="flex items-center gap-4 p-2">
+      <Image
+        src={item.img || "/noAvatar.png"}
+        alt=""
+        width={40}
+        height={40}
+        className="md:hidden xl:block rounded-full object-cover w-10 h-10"
+      />
+      <div className="flex flex-col">
+        <h3 className="font-semibold">{item.name}</h3>
+        <p className="text-xs text-gray-500">{item?.email}</p>
+      </div>
+    </td>
+    <td className="hidden sm:table-cell">{item.username}</td>
+    <td className="hidden sm:table-cell">
+      {item.subjects.map((subject) => subject.name).join(",")}
+    </td>
+    <td className="hidden sm:table-cell">
+      {item.classes.map((classItem) => classItem.name).join(",")}
+    </td>
+    <td className="hidden lg:table-cell">{item.phone}</td>
+    <td className="hidden lg:table-cell">{item.address}</td>
+    <td>
+      <div className="flex items-center gap-2">
+        <Link href={`/list/teachers/${item.id}`}>
+          <button className="w-7 h-7 flex items-center justify-center rounded-full bg-sky">
+            <Image src="/view.png" alt="" width={16} height={16} />
+          </button>
+        </Link>
+        {role === "admin" && (
+          // <button className="w-7 h-7 flex items-center justify-center rounded-full bg-Purple">
+          //   <Image src="/delete.png" alt="" width={16} height={16} />
+          // </button>
+          <FormModal table="teacher" type="delete" id={item.id} />
+        )}
+      </div>
+    </td>
+  </tr>
+);
 const TeacherListPage = async ({
   searchParams,
 }: {
   searchParams: { [key: string]: string | undefined };
 }) => {
-  const renderRow = (item: TeacherList) => (
-    <tr
-      key={item.id}
-      className="border-b border-gray-200 even:bg-slate-50 text-sm hover:bg-PurpleLight"
-    >
-      <td className="flex items-center gap-4 p-2">
-        <Image
-          src={item.img || "/noAvatar.png"}
-          alt=""
-          width={40}
-          height={40}
-          className="md:hidden xl:block rounded-full object-cover w-10 h-10"
-        />
-        <div className="flex flex-col">
-          <h3 className="font-semibold">{item.name}</h3>
-          <p className="text-xs text-gray-500">{item?.email}</p>
-        </div>
-      </td>
-      <td className="hidden sm:table-cell">{item.username}</td>
-      <td className="hidden sm:table-cell">
-        {item.subjects.map((subject) => subject.name).join(",")}
-      </td>
-      <td className="hidden sm:table-cell">
-        {item.classes.map((classItem) => classItem.name).join(",")}
-      </td>
-      <td className="hidden lg:table-cell">{item.phone}</td>
-      <td className="hidden lg:table-cell">{item.address}</td>
-      <td>
-        <div className="flex items-center gap-2">
-          <Link href={`/list/teachers/${item.id}`}>
-            <button className="w-7 h-7 flex items-center justify-center rounded-full bg-sky">
-              <Image src="/view.png" alt="" width={16} height={16} />
-            </button>
-          </Link>
-          {role === "admin" && (
-            // <button className="w-7 h-7 flex items-center justify-center rounded-full bg-Purple">
-            //   <Image src="/delete.png" alt="" width={16} height={16} />
-            // </button>
-            <FormModal table="teacher" type="delete" id={item.id} />
-          )}
-        </div>
-      </td>
-    </tr>
-  );
-
   const { page, ...queryParams } = searchParams;
 
   const p = page ? parseInt(page) : 1;
@@ -116,10 +114,11 @@ const TeacherListPage = async ({
               },
             };
             break;
-            case "search":
-              query.name = {
-                contains:value, mode: "insensitive"
-              }
+          case "search":
+            query.name = {
+              contains: value,
+              mode: "insensitive",
+            };
         }
       }
     }
