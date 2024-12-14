@@ -30,7 +30,7 @@ const LoginPage = () => {
             <Image src="/logo.png" alt="logo" width={30} height={30} />
             SMAN 2 Cirebon
           </h1>
-          <h2 className="text-gray-400">Sign in to your</h2>
+          <h2 className="text-gray-400">Sign in</h2>
           <Clerk.GlobalError className="text-sm text-red-400" />
           <Clerk.Field name="identifier" className="flex flex-col gap-2">
             <Clerk.Label className="text-xs text-gray-500">
