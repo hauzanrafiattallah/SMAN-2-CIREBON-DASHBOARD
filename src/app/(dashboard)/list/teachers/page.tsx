@@ -3,7 +3,6 @@ import Table from "@/components/Table";
 import TableSearch from "@/components/TableSearch";
 import Image from "next/image";
 import Link from "next/link";
-import { role, teachersData } from "@/lib/data";
 import FormModal from "@/components/FormModal";
 import { Subject, Teacher, Class, Prisma } from "@prisma/client";
 import prisma from "@/lib/prisma";

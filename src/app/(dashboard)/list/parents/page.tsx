@@ -2,8 +2,6 @@ import Pagination from "@/components/Pagination";
 import Table from "@/components/Table";
 import TableSearch from "@/components/TableSearch";
 import Image from "next/image";
-import Link from "next/link";
-import { parentsData, role } from "@/lib/data";
 import FormModal from "@/components/FormModal";
 import { Parent, Prisma, Student } from "@prisma/client";
 import prisma from "@/lib/prisma";
