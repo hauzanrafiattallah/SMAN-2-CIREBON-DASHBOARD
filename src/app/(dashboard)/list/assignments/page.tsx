@@ -5,15 +5,9 @@ import Image from "next/image";
 import FormModal from "@/components/FormModal";
 import { ITEM_PER_PAGE } from "@/lib/settings";
 import prisma from "@/lib/prisma";
-import {
-  Assignment,
-  Class,
-  Lesson,
-  Prisma,
-  Subject,
-  Teacher,
-} from "@prisma/client";
+import { Assignment, Class, Prisma, Subject, Teacher } from "@prisma/client";
 import { auth } from "@clerk/nextjs/server";
+import FormContainer from "@/components/FormContainer";
 
 type AssigmentList = Assignment & {
   lesson: {
@@ -34,27 +28,31 @@ const AssigmentListPage = async ({
 
   const columns = [
     {
-      header: "Subject Name",
+      header: "Nama Mata Pelajaran",
       accessor: "name",
     },
     {
-      header: "Class",
+      header: "Kelas",
       accessor: "class",
     },
     {
-      header: "Teacher",
+      header: "Guru",
       accessor: "teacher",
       className: "hidden md:table-cell",
     },
     {
-      header: "Due Date",
+      header: "Tenggat Waktu",
       accessor: "dueDate",
       className: "hidden md:table-cell",
     },
-    {
-      header: "Actions",
-      accessor: "action",
-    },
+    ...(role === "admin" || role === "teacher"
+      ? [
+          {
+            header: "Actions",
+            accessor: "action",
+          },
+        ]
+      : []),
   ];
 
   const renderRow = (item: AssigmentList) => (
@@ -70,15 +68,19 @@ const AssigmentListPage = async ({
         {item.lesson.teacher.name + " " + item.lesson.teacher.surname}
       </td>
       <td className="hidden md:table-cell">
-        {new Intl.DateTimeFormat("id-ID").format(item.dueDate)}
+        {new Intl.DateTimeFormat("id-ID", {
+          day: "numeric",
+          month: "long",
+          year: "numeric",
+        }).format(item.dueDate)}
       </td>
       <td className="p-2">
         <div className="flex items-center gap-2">
           {role === "admin" ||
             (role === "teacher" && (
               <>
-                <FormModal table="assignment" type="update" data={item} />
-                <FormModal table="assignment" type="delete" id={item.id} />
+                <FormContainer table="assignment" type="update" data={item} />
+                <FormContainer table="assignment" type="delete" id={item.id} />
               </>
             ))}
         </div>
@@ -93,6 +95,8 @@ const AssigmentListPage = async ({
   // URL PARAMS CONDITION
 
   const query: Prisma.AssignmentWhereInput = {};
+
+  query.lesson = {};
 
   if (queryParams) {
     for (const [key, value] of Object.entries(queryParams)) {
@@ -115,6 +119,36 @@ const AssigmentListPage = async ({
     }
   }
 
+  // ROLE CONDITIONS
+
+  switch (role) {
+    case "admin":
+      break;
+    case "teacher":
+      query.lesson.teacherId = currentUserId!;
+      break;
+    case "student":
+      query.lesson.class = {
+        students: {
+          some: {
+            id: currentUserId!,
+          },
+        },
+      };
+      break;
+    case "parent":
+      query.lesson.class = {
+        students: {
+          some: {
+            parentId: currentUserId!,
+          },
+        },
+      };
+      break;
+    default:
+      break;
+  }
+
   const [data, count] = await prisma.$transaction([
     prisma.assignment.findMany({
       where: query,
@@ -128,7 +162,7 @@ const AssigmentListPage = async ({
         },
       },
       take: ITEM_PER_PAGE,
-      skip: (p - 1) * ITEM_PER_PAGE,
+      skip: ITEM_PER_PAGE * (p - 1),
     }),
     prisma.assignment.count({ where: query }),
   ]);
@@ -149,7 +183,7 @@ const AssigmentListPage = async ({
             </button>
             {role === "admin" ||
               (role === "teacher" && (
-                <FormModal table="assignment" type="create" />
+                <FormContainer table="assignment" type="create" />
               ))}
           </div>
         </div>

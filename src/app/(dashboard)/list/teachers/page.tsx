@@ -3,7 +3,7 @@ import Table from "@/components/Table";
 import TableSearch from "@/components/TableSearch";
 import Image from "next/image";
 import Link from "next/link";
-import FormModal from "@/components/FormModal";
+import FormContainer from "@/components/FormContainer";
 import { Subject, Teacher, Class, Prisma } from "@prisma/client";
 import prisma from "@/lib/prisma";
 import { ITEM_PER_PAGE } from "@/lib/settings";
@@ -16,9 +16,8 @@ const TeacherListPage = async ({
 }: {
   searchParams: { [key: string]: string | undefined };
 }) => {
-  const { userId, sessionClaims } = await auth();
+  const { sessionClaims } = await auth();
   const role = (sessionClaims?.metadata as { role?: string })?.role;
-  const currentUserId = userId;
 
   const columns = [
     {
@@ -26,35 +25,40 @@ const TeacherListPage = async ({
       accessor: "info",
     },
     {
-      header: "Teacher ID",
+      header: "ID Guru",
       accessor: "teacherId",
       className: "hidden md:table-cell",
     },
     {
-      header: "Subjects",
+      header: "Mata Pelajaran",
       accessor: "subjects",
       className: "hidden md:table-cell",
     },
     {
-      header: "Classes",
+      header: "Kelas",
       accessor: "classes",
       className: "hidden md:table-cell",
     },
     {
-      header: "Phone",
+      header: "No. Telepon",
       accessor: "phone",
       className: "hidden lg:table-cell",
     },
     {
-      header: "Address",
+      header: "Alamat",
       accessor: "address",
       className: "hidden lg:table-cell",
     },
-    {
-      header: "Actions",
-      accessor: "action",
-    },
+    ...(role === "admin" || role === "teacher"
+      ? [
+          {
+            header: "Actions",
+            accessor: "action",
+          },
+        ]
+      : []),
   ];
+
   const renderRow = (item: TeacherList) => (
     <tr
       key={item.id}
@@ -93,7 +97,7 @@ const TeacherListPage = async ({
             // <button className="w-7 h-7 flex items-center justify-center rounded-full bg-Purple">
             //   <Image src="/delete.png" alt="" width={16} height={16} />
             // </button>
-            <FormModal table="teacher" type="delete" id={item.id} />
+            <FormContainer table="teacher" type="delete" id={item.id} />
           )}
         </div>
       </td>
@@ -140,7 +144,7 @@ const TeacherListPage = async ({
         classes: true,
       },
       take: ITEM_PER_PAGE,
-      skip: (p - 1) * ITEM_PER_PAGE,
+      skip: ITEM_PER_PAGE * (p - 1),
     }),
     prisma.teacher.count({ where: query }),
   ]);
@@ -163,7 +167,7 @@ const TeacherListPage = async ({
               // <button className="w-8 h-8 flex items-center justify-center rounded-full bg-Yellow">
               //   <Image src="/plus.png" alt="" width={14} height={14} />
               // </button>
-              <FormModal table="teacher" type="create" />
+              <FormContainer table="teacher" type="create" />
             )}
           </div>
         </div>

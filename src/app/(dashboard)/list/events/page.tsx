@@ -7,6 +7,7 @@ import { ITEM_PER_PAGE } from "@/lib/settings";
 import prisma from "@/lib/prisma";
 import { Class, Event, Prisma } from "@prisma/client";
 import { auth } from "@clerk/nextjs/server";
+import FormContainer from "@/components/FormContainer";
 
 type EventList = Event & { class: Class };
 
@@ -21,32 +22,36 @@ const EventListPage = async ({
 
   const columns = [
     {
-      header: "Title",
+      header: "Nama Event",
       accessor: "title",
     },
     {
-      header: "Class",
+      header: "Kelas",
       accessor: "class",
     },
     {
-      header: "Date",
+      header: "Tanggal",
       accessor: "date",
       className: "hidden md:table-cell",
     },
     {
-      header: "Start Time",
+      header: "Waktu Mulai",
       accessor: "startTime",
       className: "hidden md:table-cell",
     },
     {
-      header: "End Time",
+      header: "Waktu Selesai",
       accessor: "endTime",
       className: "hidden md:table-cell",
     },
-    {
-      header: "Actions",
-      accessor: "action",
-    },
+    ...(role === "admin" || role === "teacher"
+      ? [
+          {
+            header: "Actions",
+            accessor: "action",
+          },
+        ]
+      : []),
   ];
   const renderRow = (item: EventList) => (
     <tr
@@ -54,7 +59,7 @@ const EventListPage = async ({
       className="border-b border-gray-200 even:bg-slate-50 text-sm hover:bg-PurpleLight"
     >
       <td className="flex items-center gap-4 p-2">{item.title}</td>
-      <td>{item.class.name}</td>
+      <td>{item.class?.name || "-"}</td>
       <td className="hidden md:table-cell">
         {new Intl.DateTimeFormat("id-ID").format(item.startTime)}
       </td>
@@ -76,8 +81,8 @@ const EventListPage = async ({
         <div className="flex items-center gap-2">
           {role === "admin" && (
             <>
-              <FormModal table="event" type="update" data={item} />
-              <FormModal table="event" type="delete" id={item.id} />
+              <FormContainer table="event" type="update" data={item} />
+              <FormContainer table="event" type="delete" id={item.id} />
             </>
           )}
         </div>
@@ -106,6 +111,21 @@ const EventListPage = async ({
     }
   }
 
+  // ROLE CONDITIONS
+
+  const roleConditions = {
+    teacher: { lessons: { some: { teacherId: currentUserId! } } },
+    student: { students: { some: { id: currentUserId! } } },
+    parent: { students: { some: { parentId: currentUserId! } } },
+  };
+
+  query.OR = [
+    { classId: null },
+    {
+      class: roleConditions[role as keyof typeof roleConditions] || {},
+    },
+  ];
+
   const [data, count] = await prisma.$transaction([
     prisma.event.findMany({
       where: query,
@@ -113,7 +133,7 @@ const EventListPage = async ({
         class: true,
       },
       take: ITEM_PER_PAGE,
-      skip: (p - 1) * ITEM_PER_PAGE,
+      skip: ITEM_PER_PAGE * (p - 1),
     }),
     prisma.event.count({ where: query }),
   ]);
@@ -132,7 +152,7 @@ const EventListPage = async ({
             <button className="w-8 h-8 flex items-center justify-center rounded-full bg-Yellow">
               <Image src="/sort.png" alt="" width={14} height={14} />
             </button>
-            {role === "admin" && <FormModal table="event" type="create" />}
+            {role === "admin" && <FormContainer table="event" type="create" />}
           </div>
         </div>
       </div>
