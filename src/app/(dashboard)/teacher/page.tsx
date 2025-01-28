@@ -10,7 +10,7 @@ const TeacherPage = async () => {
       {/* LEFT */}
       <div className="w-full xl:w-2/3">
         <div className="rounded-md h-full bg-white p-4">
-          <h1 className="text-xl font-semibold">Schedule Guru</h1>
+          <h1 className="text-xl font-semibold">Jadwal Guru</h1>
           <BigCalendarContainer type="teacherId" id={userId!} />
         </div>
       </div>

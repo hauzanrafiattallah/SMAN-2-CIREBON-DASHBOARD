@@ -1,6 +1,5 @@
 import EventCalendar from "@/components/EventCalendar";
 import Announcements from "@/components/Announcements";
-import BigCalendar from "@/components/BigCalendar";
 import BigCalendarContainer from "@/components/BigCalendarContainer";
 import { auth } from "@clerk/nextjs/server";
 import prisma from "@/lib/prisma";

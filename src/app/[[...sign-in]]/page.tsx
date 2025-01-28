@@ -4,6 +4,7 @@ import * as Clerk from "@clerk/elements/common";
 import * as SignIn from "@clerk/elements/sign-in";
 import { useUser } from "@clerk/nextjs";
 import Image from "next/image";
+
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 
@@ -24,7 +25,7 @@ const LoginPage = () => {
       <SignIn.Root>
         <SignIn.Step
           name="start"
-          className="bg-white p-12 rounded-md shadow-2xl flex flex-col gap-4 w-[400px]" // Adjusted width
+          className="bg-white p-12 rounded-md shadow-2xl flex flex-col gap-4 w-[400px]" 
         >
           <h1 className="text-xl font-bold flex items-center gap-2">
             <Image src="/logo.png" alt="logo" width={30} height={30} />
@@ -58,7 +59,7 @@ const LoginPage = () => {
 
           <SignIn.Action
             submit
-            className="bg-blue-500 text-white my-1 rounded-md text-sm p-3" // Adjusted button padding
+            className="bg-blue-500 text-white my-1 rounded-md text-sm p-3" 
           >
             Sign In
           </SignIn.Action>
