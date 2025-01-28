@@ -118,6 +118,7 @@ const ResultListPage = async ({
               { exam: { title: { contains: value, mode: "insensitive" } } },
               { student: { name: { contains: value, mode: "insensitive" } } },
             ];
+            break;
           default:
             break;
         }

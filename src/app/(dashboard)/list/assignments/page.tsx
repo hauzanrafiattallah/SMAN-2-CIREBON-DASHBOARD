@@ -103,15 +103,16 @@ const AssigmentListPage = async ({
       if (value !== undefined) {
         switch (key) {
           case "classId":
-            query.lesson = { classId: parseInt(value) };
+            query.lesson.classId = parseInt(value);
             break;
           case "teacherId":
-            query.lesson = { teacherId: value };
+            query.lesson.teacherId = value;
             break;
           case "search":
-            query.lesson = {
-              subject: { name: { contains: value, mode: "insensitive" } },
+            query.lesson.subject = {
+              name: { contains: value, mode: "insensitive" },
             };
+            break;
           default:
             break;
         }

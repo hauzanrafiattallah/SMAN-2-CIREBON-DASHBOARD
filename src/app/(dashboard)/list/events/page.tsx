@@ -44,7 +44,7 @@ const EventListPage = async ({
       accessor: "endTime",
       className: "hidden md:table-cell",
     },
-    ...(role === "admin" || role === "teacher"
+    ...(role === "admin"
       ? [
           {
             header: "Actions",
@@ -104,6 +104,7 @@ const EventListPage = async ({
         switch (key) {
           case "search":
             query.title = { contains: value, mode: "insensitive" };
+            break;
           default:
             break;
         }

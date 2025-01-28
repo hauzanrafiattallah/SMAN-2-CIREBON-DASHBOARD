@@ -34,7 +34,7 @@ const LessonListPage = async ({
       accessor: "teacher",
       className: "hidden md:table-cell",
     },
-    ...(role === "admin" || role === "teacher"
+    ...(role === "admin" 
       ? [
           {
             header: "Actions",
@@ -90,6 +90,7 @@ const LessonListPage = async ({
               { subject: { name: { contains: value, mode: "insensitive" } } },
               { teacher: { name: { contains: value, mode: "insensitive" } } },
             ];
+            break;
           default:
             break;
         }
@@ -116,7 +117,7 @@ const LessonListPage = async ({
       {/* TOP */}
       <div className="flex items-center justify-between">
         <h1 className="hidden md:block text-lg font-semibold">
-          Daftar Lessons
+          Daftar Pelajaran
         </h1>
         <div className="flex flex-col md:flex-row items-center gap-4  w-full md:w-auto">
           <TableSearch />

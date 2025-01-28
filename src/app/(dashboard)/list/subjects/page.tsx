@@ -25,7 +25,7 @@ const SubjectListPage = async ({
     },
     {
       header: "Guru",
-      accessor: "teacher",
+      accessor: "teachers",
       className: "hidden md:table-cell",
     },
     {
@@ -110,7 +110,7 @@ const SubjectListPage = async ({
               <Image src="/sort.png" alt="" width={14} height={14} />
             </button>
             {role === "admin" && (
-              <FormContainer table="teacher" type="create" />
+              <FormContainer table="subject" type="create" />
             )}
           </div>
         </div>

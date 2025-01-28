@@ -39,7 +39,7 @@ const ClassListPage = async ({
       accessor: "supervisor",
       className: "hidden md:table-cell",
     },
-    ...(role === "admin" || role === "teacher"
+    ...(role === "admin" 
       ? [
           {
             header: "Actions",

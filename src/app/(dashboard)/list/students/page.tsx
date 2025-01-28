@@ -44,7 +44,7 @@ const StudentListPage = async ({
       accessor: "address",
       className: "hidden lg:table-cell",
     },
-    ...(role === "admin" || role === "teacher"
+    ...(role === "admin"
       ? [
           {
             header: "Actions",

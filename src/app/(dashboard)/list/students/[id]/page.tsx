@@ -54,12 +54,14 @@ const SingleStudentPage = async ({
               />
             </div>
             <div className="w-2/3 flex flex-col justify-between gap-4">
-              <h1 className="text-xl font-semibold">
-                {student.name + " " + student.surname}
-              </h1>
-              {role === "admin" && (
-                <FormContainer table="student" type="update" data={student} />
-              )}
+              <div className="flex items-center gap-4">
+                <h1 className="text-xl font-semibold">
+                  {student.name + " " + student.surname}
+                </h1>
+                {role === "admin" && (
+                  <FormContainer table="student" type="update" data={student} />
+                )}
+              </div>
               <p className="text-sm text-gray-500">
                 {student.class.name} - {student.class._count.lessons} Lessons
               </p>
@@ -70,11 +72,13 @@ const SingleStudentPage = async ({
                 </div>
                 <div className="w-full md:w-1/3 lg:w-full 2xl:w-1/3 flex items-center gap-2 ">
                   <Image src="/date.png" alt="" width={14} height={14} />
-                  {new Intl.DateTimeFormat("id-ID", {
-                    day: "numeric",
-                    month: "long",
-                    year: "numeric",
-                  }).format(student.birthday)}
+                  <span>
+                    {new Intl.DateTimeFormat("id-ID", {
+                      day: "numeric",
+                      month: "long",
+                      year: "numeric",
+                    }).format(student.birthday)}
+                  </span>
                 </div>
                 <div className="w-full md:w-1/3 lg:w-full 2xl:w-1/3 flex items-center gap-2">
                   <Image src="/mail.png" alt="" width={14} height={14} />
