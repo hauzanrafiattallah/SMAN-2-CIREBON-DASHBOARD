@@ -72,13 +72,11 @@ const StudentForm = ({
   return (
     <form className="flex flex-col gap-8" onSubmit={onSubmit}>
       <h1 className="text-xl font-semibold">
-        {type === "create" ? "Create a new student" : "Update student"}
+        {type === "create" ? "Create a new student" : "Update the student"}
       </h1>
-
       <span className="text-xs text-gray-400 font-medium">
         Authentication Information
       </span>
-
       <div className="flex justify-between flex-wrap gap-4">
         <InputField
           label="Username"
@@ -97,86 +95,85 @@ const StudentForm = ({
         <InputField
           label="Password"
           name="password"
+          type="password"
           defaultValue={data?.password}
           register={register}
           error={errors?.password}
         />
-
-        <span className="text-xs text-gray-400 font-medium">
-          Personal Information
-        </span>
-
-        <CldUploadWidget
-          uploadPreset="school"
-          onSuccess={(result, { widget }) => {
-            setImg(result.info);
-            widget.close();
-          }}
-        >
-          {({ open }) => {
-            return (
-              <div
-                className="text-xs text-gray-500 flex items-center gap-2 cursor-pointer"
-                onClick={() => open()}
-              >
-                <Image src="/upload.svg" width={28} height={28} alt="Image" />
-                <span>Upload a photo</span>
-              </div>
-            );
-          }}
-        </CldUploadWidget>
-
-        <div className="flex justify-between flex-wrap gap-4">
-          <InputField
-            label="First Name"
-            name="name"
-            defaultValue={data?.name}
-            register={register}
-            error={errors?.name}
-          />
-          <InputField
-            label="Last Name"
-            name="surname"
-            defaultValue={data?.surname}
-            register={register}
-            error={errors?.surname}
-          />
-          <InputField
-            label="Phone"
-            name="phone"
-            defaultValue={data?.phone}
-            register={register}
-            error={errors?.phone}
-          />
-          <InputField
-            label="Address"
-            name="address"
-            defaultValue={data?.address}
-            register={register}
-            error={errors?.address}
-          />
-          <InputField
-            label="Blood Type"
-            name="bloodType"
-            defaultValue={data?.bloodType}
-            register={register}
-            error={errors?.bloodType}
-          />
-          <InputField
-            label="Birthday"
-            name="birthday"
-            defaultValue={data?.birthday.toISOString().split("T")[0]}
-            register={register}
-            error={errors?.birthday}
-          />
-          <InputField
-            label="Parent Id"
-            name="parentId"
-            defaultValue={data?.parentId}
-            register={register}
-            error={errors?.parentId}
-          />
-        </div>
+      </div>
+      <span className="text-xs text-gray-400 font-medium">
+        Personal Information
+      </span>
+      <CldUploadWidget
+        uploadPreset="school"
+        onSuccess={(result, { widget }) => {
+          setImg(result.info);
+          widget.close();
+        }}
+      >
+        {({ open }) => {
+          return (
+            <div
+              className="text-xs text-gray-500 flex items-center gap-2 cursor-pointer"
+              onClick={() => open()}
+            >
+              <Image src="/upload.png" alt="" width={28} height={28} />
+              <span>Upload a photo</span>
+            </div>
+          );
+        }}
+      </CldUploadWidget>
+      <div className="flex justify-between flex-wrap gap-4">
+        <InputField
+          label="First Name"
+          name="name"
+          defaultValue={data?.name}
+          register={register}
+          error={errors.name}
+        />
+        <InputField
+          label="Last Name"
+          name="surname"
+          defaultValue={data?.surname}
+          register={register}
+          error={errors.surname}
+        />
+        <InputField
+          label="Phone"
+          name="phone"
+          defaultValue={data?.phone}
+          register={register}
+          error={errors.phone}
+        />
+        <InputField
+          label="Address"
+          name="address"
+          defaultValue={data?.address}
+          register={register}
+          error={errors.address}
+        />
+        <InputField
+          label="Blood Type"
+          name="bloodType"
+          defaultValue={data?.bloodType}
+          register={register}
+          error={errors.bloodType}
+        />
+        <InputField
+          label="Birthday"
+          name="birthday"
+          defaultValue={data?.birthday.toISOString().split("T")[0]}
+          register={register}
+          error={errors.birthday}
+          type="date"
+        />
+        <InputField
+          label="Parent Id"
+          name="parentId"
+          defaultValue={data?.parentId}
+          register={register}
+          error={errors.parentId}
+        />
         {data && (
           <InputField
             label="Id"
@@ -184,6 +181,7 @@ const StudentForm = ({
             defaultValue={data?.id}
             register={register}
             error={errors?.id}
+            hidden
           />
         )}
         <div className="flex flex-col gap-2 w-full md:w-1/4">
@@ -193,8 +191,8 @@ const StudentForm = ({
             {...register("sex")}
             defaultValue={data?.sex}
           >
-            <option value="MALE"> Male</option>
-            <option value="FEMALE"> Female</option>
+            <option value="MALE">Male</option>
+            <option value="FEMALE">Female</option>
           </select>
           {errors.sex?.message && (
             <p className="text-xs text-red-400">
@@ -207,14 +205,10 @@ const StudentForm = ({
           <select
             className="ring-[1.5px] ring-gray-300 p-2 rounded-md text-sm w-full"
             {...register("gradeId")}
-            defaultValue={data?.grade}
+            defaultValue={data?.gradeId}
           >
             {grades.map((grade: { id: number; level: number }) => (
-              <option
-                value={grade.id}
-                key={grade.id}
-                selected={data && grade.id === data.gradeId}
-              >
+              <option value={grade.id} key={grade.id}>
                 {grade.level}
               </option>
             ))}
@@ -230,7 +224,7 @@ const StudentForm = ({
           <select
             className="ring-[1.5px] ring-gray-300 p-2 rounded-md text-sm w-full"
             {...register("classId")}
-            defaultValue={data?.class}
+            defaultValue={data?.classId}
           >
             {classes.map(
               (classItem: {
@@ -255,11 +249,9 @@ const StudentForm = ({
         </div>
       </div>
       {state.error && (
-        <span className="text-red-500">
-          Something went wrong. Please try again.
-        </span>
+        <span className="text-red-500">Something went wrong!</span>
       )}
-      <button className="bg-blue-400 text-white p-2 rounded-md">
+      <button type="submit" className="bg-blue-400 text-white p-2 rounded-md">
         {type === "create" ? "Create" : "Update"}
       </button>
     </form>

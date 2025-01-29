@@ -1,7 +1,8 @@
 "use client";
+
 import { zodResolver } from "@hookform/resolvers/zod";
-import InputField from "../InputField";
 import { useForm } from "react-hook-form";
+import InputField from "../InputField";
 import {
   examSchema,
   ExamSchema,
@@ -39,6 +40,7 @@ const ExamForm = ({
   });
 
   // AFTER REACT 19 IT'LL BE USEACTIONSTATE
+
   const [state, formAction] = useFormState(
     type === "create" ? createExam : updateExam,
     {
@@ -56,7 +58,7 @@ const ExamForm = ({
 
   useEffect(() => {
     if (state.success) {
-      toast(`Subject has been ${type === "create" ? "created" : "updated"}!`);
+      toast(`Exam has been ${type === "create" ? "created" : "updated"}!`);
       setOpen(false);
       router.refresh();
     }
@@ -67,7 +69,7 @@ const ExamForm = ({
   return (
     <form className="flex flex-col gap-8" onSubmit={onSubmit}>
       <h1 className="text-xl font-semibold">
-        {type === "create" ? "Create a new exam" : "Update exam"}
+        {type === "create" ? "Create a new exam" : "Update the exam"}
       </h1>
 
       <div className="flex justify-between flex-wrap gap-4">
@@ -125,9 +127,7 @@ const ExamForm = ({
         </div>
       </div>
       {state.error && (
-        <span className="text-red-500">
-          Something went wrong. Please try again.
-        </span>
+        <span className="text-red-500">Something went wrong!</span>
       )}
       <button className="bg-blue-400 text-white p-2 rounded-md">
         {type === "create" ? "Create" : "Update"}

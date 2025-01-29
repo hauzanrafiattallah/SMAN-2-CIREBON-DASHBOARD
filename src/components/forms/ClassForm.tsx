@@ -1,7 +1,8 @@
 "use client";
+
 import { zodResolver } from "@hookform/resolvers/zod";
-import InputField from "../InputField";
 import { useForm } from "react-hook-form";
+import InputField from "../InputField";
 import {
   classSchema,
   ClassSchema,
@@ -39,6 +40,7 @@ const ClassForm = ({
   });
 
   // AFTER REACT 19 IT'LL BE USEACTIONSTATE
+
   const [state, formAction] = useFormState(
     type === "create" ? createClass : updateClass,
     {
@@ -67,7 +69,7 @@ const ClassForm = ({
   return (
     <form className="flex flex-col gap-8" onSubmit={onSubmit}>
       <h1 className="text-xl font-semibold">
-        {type === "create" ? "Create a new class" : "Update class"}
+        {type === "create" ? "Create a new class" : "Update the class"}
       </h1>
 
       <div className="flex justify-between flex-wrap gap-4">
@@ -92,6 +94,7 @@ const ClassForm = ({
             defaultValue={data?.id}
             register={register}
             error={errors?.id}
+            hidden
           />
         )}
         <div className="flex flex-col gap-2 w-full md:w-1/4">
@@ -124,7 +127,7 @@ const ClassForm = ({
           <select
             className="ring-[1.5px] ring-gray-300 p-2 rounded-md text-sm w-full"
             {...register("gradeId")}
-            defaultValue={data?.grade}
+            defaultValue={data?.gradeId}
           >
             {grades.map((grade: { id: number; level: number }) => (
               <option
@@ -144,9 +147,7 @@ const ClassForm = ({
         </div>
       </div>
       {state.error && (
-        <span className="text-red-500">
-          Something went wrong. Please try again.
-        </span>
+        <span className="text-red-500">Something went wrong!</span>
       )}
       <button className="bg-blue-400 text-white p-2 rounded-md">
         {type === "create" ? "Create" : "Update"}
