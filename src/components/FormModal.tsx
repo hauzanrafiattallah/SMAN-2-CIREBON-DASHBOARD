@@ -21,7 +21,7 @@ const deleteActionMap = {
   teacher: deleteTeacher,
   student: deleteStudent,
   exam: deleteExam,
-  // TODO: OTHER DELETE ACTIONS
+// TODO: OTHER DELETE ACTIONS
   parent: deleteSubject,
   lesson: deleteSubject,
   assignment: deleteSubject,
@@ -51,7 +51,6 @@ const ClassForm = dynamic(() => import("./forms/ClassForm"), {
 const ExamForm = dynamic(() => import("./forms/ExamForm"), {
   loading: () => <h1>Loading...</h1>,
 });
-
 // TODO: OTHER FORMS
 
 const forms: {
