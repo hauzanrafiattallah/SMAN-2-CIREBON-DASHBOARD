@@ -2,6 +2,7 @@
 const nextConfig = {
   images: {
     remotePatterns: [{ hostname: "images.pexels.com" }],
+    domains: ["res.cloudinary.com"],
   },
 };
 
