@@ -161,7 +161,7 @@ const SingleTeacherPage = async ({
         </div>
         {/* BOTTOM */}
         <div className="mt-4 bg-white rounded-md p-4 h-[800px]">
-          <h1>Teacher's Schedule</h1>
+          <h1>Teacher&apos;s Schedule</h1>
           <BigCalendarContainer type="teacherId" id={teacher.id} />
         </div>
       </div>
@@ -175,31 +175,31 @@ const SingleTeacherPage = async ({
               className="p-3 rounded-md bg-SkyLight"
               href={`/list/classes?supervisorId=${teacher.id}`}
             >
-              Teacher's Classes
+              Teacher&apos;s Classes
             </Link>
             <Link
               className="p-3 rounded-md bg-PurpleLight"
               href={`/list/students?teacherId=${teacher.id}`}
             >
-              Teacher's Students
+              Teacher&apos;s Students
             </Link>
             <Link
               className="p-3 rounded-md bg-YellowLight"
               href={`/list/lessons?teacherId=${teacher.id}`}
             >
-              Teacher's Lessons
+              Teacher&apos;s Lessons
             </Link>
             <Link
               className="p-3 rounded-md bg-pink-50"
               href={`/list/exams?teacherId=${teacher.id}`}
             >
-              Teacher's Exams
+              Teacher&apos;s Exams
             </Link>
             <Link
               className="p-3 rounded-md bg-sky"
               href={`/list/assignments?teacherId=${teacher.id}`}
             >
-              Teacher's Assignments
+              Teacher&apos;s Assignments
             </Link>
           </div>
         </div>
